@@ -28,6 +28,7 @@ function App() {
 
 	const handleSubmit = () => {
 		getPhotos(searchText);
+		setPage(1);
 	};
 	return (
 		<div className="App bg-black w-full h-auto flex sm:flex-row flex-col">

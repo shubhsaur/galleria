@@ -3,6 +3,9 @@ import axios from "axios";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { useEffect } from "react";
+import { AiOutlineClose } from "react-icons/ai";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
 
 function App() {
 	const API_KEY = "7Niohy-tMSP05Sye4ow5xZIjwvFQSAP5g9BoVSgg2qI";
@@ -10,6 +13,10 @@ function App() {
 	const [photos, setPhotos] = useState([]);
 	const [searchText, setSearchText] = useState("");
 	const [page, setPage] = useState(1);
+	const [pageCount, setPageCount] = useState(1);
+	const [open, setOpen] = React.useState(false);
+	const handleOpen = () => setOpen(true);
+	const handleClose = () => setOpen(false);
 
 	useEffect(() => {
 		getPhotos(searchText, page);
@@ -22,7 +29,7 @@ function App() {
 	const getPhotos = async (searchText) => {
 		const response = await axios.get(`${API_URL}?query=${searchText}&client_id=${API_KEY}&page=${page}&per_page=20`);
 		setPhotos(response.data.results);
-
+		setPageCount(response.data.total_pages);
 		console.log(response.data.results);
 	};
 
@@ -36,7 +43,8 @@ function App() {
 				<div>
 					<h1 className="text-3xl py-8 logo text-[#fca311]">Galleria</h1>
 					<p className="py-4 text-gray-300 text-lg">
-						A minimal elegant gallery for your art or photos. Search your favourite cuisines, or top wildlife pictures, or just browse the latest photos from all over the world.
+						A minimal elegant gallery for your art or photos. Search your favourite cuisines, or top wildlife pictures,
+						or just browse the latest photos from all over the world.
 					</p>
 
 					<div className="py-8 flex gap-2 justify-center">
@@ -82,8 +90,8 @@ function App() {
 					<div className="text-white flex flex-col justify-center items-center py-24 ">
 						<h1 className="text-[#fcf6bd] text-3xl sm:text-6xl font-bold">Welcome To Galleria!</h1>
 						<p className="py-8 text-[#e5e5e5] text-base sm:text-lg w-[80%] sm:w-[50%]">
-							Getting Inspired by an Art or Photography! Try using Galleria where you could find yours favourite arts or photos
-							within one click.
+							Getting Inspired by an Art or Photography! Try using Galleria where you could find yours favourite arts or
+							photos within one click.
 						</p>
 						<h2 className="text-[#fcf6bd] text-xl sm:text-3xl font-bold">About Me</h2>
 						<p className="py-8 text-[#e5e5e5] text-base sm:text-lg w-[80%] sm:w-[50%]">
@@ -109,10 +117,13 @@ function App() {
 						</div>
 					</div>
 				)}
+
 				<div className="flex flex-wrap sm:items-center justify-center sm:px-4 sm:py-4 px-2 py-4 sm:gap-4 gap-2 ">
 					{photos.map((photo) => (
-						<div className="w-[180px] h-[180px] sm:w-[340px] sm:h-[420px] border-gray-300 border-2 rounded-md">
-							<img src={photo.urls.regular} alt={photo.alt_description} className="w-full h-full object-cover" />
+						<div className="w-[180px] h-[180px] sm:w-[340px] sm:h-[420px] border-gray-300 border-2 rounded-md zoomEffect">
+							<a href={photo.urls.regular} target="_blank">
+								<img src={photo.urls.regular} alt={photo.alt_description} className="w-full h-full object-cover" />
+							</a>
 						</div>
 					))}
 				</div>
@@ -120,7 +131,7 @@ function App() {
 					<div className="self-end w-full px-16 py-8">
 						<div className="bg-gray-300 w-full flex justify-center py-4 rounded-md">
 							<Stack spacing={2}>
-								<Pagination size="medium" color="primary" count={10} page={page} onChange={handlePage} />
+								<Pagination size="medium" color="primary" count={pageCount} page={page} onChange={handlePage} />
 							</Stack>
 						</div>
 					</div>

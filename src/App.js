@@ -3,9 +3,8 @@ import axios from "axios";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { useEffect } from "react";
-import { AiOutlineClose } from "react-icons/ai";
-import Modal from "@mui/material/Modal";
-import Box from "@mui/material/Box";
+import CloseIcon from '@mui/icons-material/Close';
+
 
 function App() {
 	const API_KEY = "7Niohy-tMSP05Sye4ow5xZIjwvFQSAP5g9BoVSgg2qI";
@@ -14,9 +13,12 @@ function App() {
 	const [searchText, setSearchText] = useState("");
 	const [page, setPage] = useState(1);
 	const [pageCount, setPageCount] = useState(1);
-	const [open, setOpen] = React.useState(false);
-	const handleOpen = () => setOpen(true);
-	const handleClose = () => setOpen(false);
+	const [modal, setModal] = useState(false);
+	const [tempimgSrc, setTempimgSrc] = useState("");
+	const getImg = (imgSrc) => {
+		setTempimgSrc(imgSrc);
+		setModal(true);
+	};
 
 	useEffect(() => {
 		getPhotos(searchText, page);
@@ -119,13 +121,23 @@ function App() {
 				)}
 
 				<div className="flex flex-wrap sm:items-center justify-center sm:px-4 sm:py-4 px-2 py-4 sm:gap-4 gap-2 ">
-					{photos.map((photo) => (
-						<div className="w-[180px] h-[180px] sm:w-[340px] sm:h-[420px] border-gray-300 border-2 rounded-md zoomEffect">
-							<a href={photo.urls.regular} target="_blank">
-								<img src={photo.urls.regular} alt={photo.alt_description} className="w-full h-full object-cover" />
-							</a>
-						</div>
-					))}
+					{photos.map((photo, index) => {
+						return (
+							<>
+								<div className={modal ? "modal open" : "modal"}>
+									<img src={tempimgSrc} alt={photo.alt_description} />
+									<CloseIcon fontSize="large" onClick={() => setModal(false)} />
+								</div>
+								<div
+									key={index}
+									onClick={() => getImg(photo.urls.regular)}
+									className="w-[180px] h-[180px] sm:w-[340px] sm:h-[420px] border-gray-300 border-2 rounded-md zoomEffect"
+								>
+									<img src={photo.urls.regular} alt={photo.alt_description} className="w-full h-full object-cover" />
+								</div>
+							</>
+						);
+					})}
 				</div>
 				{photos.length > 0 && (
 					<div className="self-end w-full px-16 py-8">

@@ -3,8 +3,9 @@ import axios from "axios";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { useEffect } from "react";
-import CloseIcon from '@mui/icons-material/Close';
-
+import CloseIcon from "@mui/icons-material/Close";
+import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
+import { saveAs } from "file-saver";
 
 function App() {
 	const API_KEY = "7Niohy-tMSP05Sye4ow5xZIjwvFQSAP5g9BoVSgg2qI";
@@ -15,8 +16,10 @@ function App() {
 	const [pageCount, setPageCount] = useState(1);
 	const [modal, setModal] = useState(false);
 	const [tempimgSrc, setTempimgSrc] = useState("");
+
 	const getImg = (imgSrc) => {
 		setTempimgSrc(imgSrc);
+
 		setModal(true);
 	};
 
@@ -24,7 +27,7 @@ function App() {
 		getPhotos(searchText, page);
 	}, [page]);
 
-	const handlePage = (event, value) => {
+	const handlePage = ( value) => {
 		setPage(value);
 	};
 
@@ -32,13 +35,14 @@ function App() {
 		const response = await axios.get(`${API_URL}?query=${searchText}&client_id=${API_KEY}&page=${page}&per_page=20`);
 		setPhotos(response.data.results);
 		setPageCount(response.data.total_pages);
-		console.log(response.data.results);
+		// console.log(response.data.results);
 	};
 
 	const handleSubmit = () => {
 		getPhotos(searchText);
 		setPage(1);
 	};
+
 	return (
 		<div className="App bg-black w-full h-auto flex sm:flex-row flex-col">
 			<aside className="sm:sticky sm:top-0 w-full h-screen flex flex-col basis-[15%] grow-0 sm:justify-between items-start px-8 text-white">
@@ -126,11 +130,15 @@ function App() {
 							<>
 								<div className={modal ? "modal open" : "modal"}>
 									<img src={tempimgSrc} alt={photo.alt_description} />
-									<CloseIcon fontSize="large" onClick={() => setModal(false)} />
+
+									<DownloadOutlinedIcon onClick={() => saveAs(tempimgSrc, "image.jpg")} className="download" />
+
+									<CloseIcon className="close" onClick={() => setModal(false)} />
 								</div>
 								<div
 									key={index}
-									onClick={() => getImg(photo.urls.regular)}
+									onClick={() => getImg(photo.urls.full)}
+									
 									className="w-[180px] h-[180px] sm:w-[340px] sm:h-[420px] border-gray-300 border-2 rounded-md zoomEffect"
 								>
 									<img src={photo.urls.regular} alt={photo.alt_description} className="w-full h-full object-cover" />

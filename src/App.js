@@ -27,7 +27,7 @@ function App() {
 		getPhotos(searchText, page);
 	}, [page]);
 
-	const handlePage = ( value) => {
+	const handlePage = (event, value) => {
 		setPage(value);
 	};
 
@@ -138,7 +138,6 @@ function App() {
 								<div
 									key={index}
 									onClick={() => getImg(photo.urls.raw)}
-									
 									className="w-[180px] h-[180px] sm:w-[340px] sm:h-[420px] border-gray-300 border-2 rounded-md zoomEffect"
 								>
 									<img src={photo.urls.regular} alt={photo.alt_description} className="w-full h-full object-cover" />

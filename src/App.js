@@ -129,7 +129,7 @@ function App() {
 						return (
 							<>
 								<div className={modal ? "modal open" : "modal"}>
-									<img src={tempimgSrc} alt={photo.alt_description} />
+									<img src={tempimgSrc + "&fm=jpg&fit=crop&w=1080&q=80&fit=max"} alt={photo.alt_description} />
 
 									<DownloadOutlinedIcon onClick={() => saveAs(tempimgSrc, "image.jpg")} className="download" />
 
@@ -137,7 +137,7 @@ function App() {
 								</div>
 								<div
 									key={index}
-									onClick={() => getImg(photo.urls.full)}
+									onClick={() => getImg(photo.urls.raw)}
 									
 									className="w-[180px] h-[180px] sm:w-[340px] sm:h-[420px] border-gray-300 border-2 rounded-md zoomEffect"
 								>

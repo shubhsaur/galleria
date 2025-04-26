@@ -81,21 +81,21 @@ function App() {
 				</div>
 
 				<div className="flex flex-col justify-center  gap-4 py-4 text-xl w-full">
-					<a href="https://twitter.com/shubh_saur" className="hover:text-blue-200 ease-in-out duration-100">
+					<a href="https://twitter.com/shubhsaur" className="hover:text-blue-200 ease-in-out duration-100">
 						Twitter
 					</a>
 					<div className="h-[1px] w-[100%] bg-[#2A2A2A]"></div>
-					<a href="https://www.linkedin.com/in/shubhsaur/" className="hover:text-pink-400 ease-in-out duration-100">
-						Instagram
+					<a href="https://www.linkedin.com/in/shubhsaur/" className="hover:text-blue-600 ease-in-out duration-100">
+						LinkedIn
 					</a>
 					<div className="h-[1px] w-[100%] bg-[#2A2A2A]"></div>
-					<a href="mailto:shubhamsaurabh@outlook.com" className="hover:text-blue-600 ease-in-out duration-100">
+					<a href="mailto:shubhamsaurabh@outlook.com" className="hover:text-gray-600 ease-in-out duration-100">
 						Email
 					</a>
 					<div className="h-[1px] w-[100%] bg-[#2A2A2A]"></div>
 				</div>
 				<footer>
-					<p className="pt-2 text-gray-300 text-lg">Made in India with {"\u2764"}</p>
+					<p className="pt-2 text-gray-300 text-lg">Made in India with <span className="text-red-600">{"\u2764"}</span></p>
 					<p className="pb-2 text-gray-300 text-[10px]">Copyright {"\u00A9"} Shubham Saurabh</p>
 				</footer>
 			</aside>

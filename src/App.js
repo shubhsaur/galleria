@@ -5,6 +5,7 @@ import Stack from "@mui/material/Stack";
 import { useEffect } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
+import CircularProgress from "@mui/material/CircularProgress";
 import { saveAs } from "file-saver";
 
 function App() {
@@ -16,11 +17,19 @@ function App() {
 	const [pageCount, setPageCount] = useState(1);
 	const [modal, setModal] = useState(false);
 	const [tempimgSrc, setTempimgSrc] = useState("");
+	const [isLoading, setIsLoading] = useState(false);
 
 	const getImg = (imgSrc) => {
-		setTempimgSrc(imgSrc);
+		setModal(false);
+		setIsLoading(true);
+		setTimeout(() => {
+			setTempimgSrc(imgSrc);
+			setModal(true);
+		}, 100);
+	};
 
-		setModal(true);
+	const handleImageLoad = () => {
+		setIsLoading(false);
 	};
 
 	useEffect(() => {
@@ -128,19 +137,33 @@ function App() {
 					{photos.map((photo, index) => {
 						return (
 							<>
-								<div className={modal ? "modal open" : "modal"}>
-									<img src={tempimgSrc + "&fm=jpg&fit=crop&w=1080&q=80&fit=max"} alt={photo.alt_description} />
+								{modal && tempimgSrc && (
+									<div className="modal open">
+										{isLoading && (
+											<div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+												<CircularProgress style={{ color: '#fca311' }} />
+											</div>
+										)}
+										<img 
+											src={tempimgSrc + "&fm=jpg&fit=crop&w=1080&q=80&fit=max"} 
+											alt={photo.alt_description} 
+											loading="lazy" 
+											decoding="async"
+											onLoad={handleImageLoad}
+											className={isLoading ? 'opacity-0' : 'opacity-100 transition-opacity duration-300'}
+										/>
 
-									<DownloadOutlinedIcon onClick={() => saveAs(tempimgSrc, "image.jpg")} className="download" />
+										<DownloadOutlinedIcon onClick={() => saveAs(tempimgSrc, "image.jpg")} className="download" />
 
-									<CloseIcon className="close" onClick={() => setModal(false)} />
-								</div>
+										<CloseIcon className="close" onClick={() => setModal(false)} />
+									</div>
+								)}
 								<div
 									key={index}
 									onClick={() => getImg(photo.urls.raw)}
 									className="w-[180px] h-[180px] sm:w-[340px] sm:h-[420px] border-gray-300 border-2 rounded-md zoomEffect"
 								>
-									<img src={photo.urls.regular} alt={photo.alt_description} className="w-full h-full object-cover" />
+									<img src={photo.urls.regular} alt={photo.alt_description} className="w-full h-full object-cover" loading="lazy" decoding="async" />
 								</div>
 							</>
 						);
